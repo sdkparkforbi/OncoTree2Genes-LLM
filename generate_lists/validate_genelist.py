@@ -22,6 +22,13 @@ DEBUG = True
 
 if "USE_LITELLM_PROXY" not in os.environ:
     YOUR_API_KEY = os.getenv("LLM_API_KEY")
+
+    if not YOUR_API_KEY:
+        raise SystemExit(
+            "ERROR: LLM_API_KEY is not set. Create a `.env` file in the repo root "
+            "containing `LLM_API_KEY=<your Gemini API key>` (see .env.example)."
+        )
+
     # Set API keys for providers
     # os.environ["OPENAI_API_KEY"] = YOUR_API_KEY
     # os.environ["ANTHROPIC_API_KEY"] = YOUR_API_KEY

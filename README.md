@@ -149,6 +149,43 @@ Contributor: Suhasini Lulla
 GSoC project mentors: Ino de Bruijn, Dr. Karl Pichotta, Dr. Chris Fong, Dr. Augustin Luna
 
 
+## ▶️ Quick start (verified working, 2026-07)
+
+```bash
+# 1) Environment + dependencies
+python -m venv .venv
+# Windows: .venv\Scripts\activate    |    macOS/Linux: source .venv/bin/activate
+# IMPORTANT: force prebuilt wheels — the default install may try to compile from
+# source and fail asking for Rust/Cargo.
+pip install --only-binary=:all: litellm openpyxl pandas pydantic python-dotenv requests typer lxml
+
+# 2) API key: copy .env.example -> .env and set LLM_API_KEY=<your Gemini key>
+cp .env.example .env    # then edit .env
+
+# 3) Generate lists (genes/pathways/molecular subtypes) for a couple of codes
+python generate_lists/llm_mine_gene_pathway_assoc_oncotree.py \
+    -i assets/oncotree_latest_stable_June2025.json -o gene_pathway_lists/out.json \
+    -m gemini/gemini-2.5-flash -t 0.25 -c PAAD -c BRCA --genes --pathways --molecular
+
+# 4) Validate the generated genes against literature (TCGA set + PubMed abstracts)
+python generate_lists/validate_genelist.py \
+    -i gene_pathway_lists/out.json -r assets/mmc1.xlsx \
+    -m gemini/gemini-2.5-flash -t 0.0 --genes
+```
+
+## 🛠 Troubleshooting (common setup errors)
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `pip install` asks for **Rust/Cargo** then fails | a dependency tried to build from source (no matching wheel) | install with `--only-binary=:all:` (as above), or upgrade pip / use `uv sync` |
+| `TypeError: str expected, not NoneType` on startup | `LLM_API_KEY` missing → `os.environ["GOOGLE_API_KEY"] = None` | create `.env` with `LLM_API_KEY=...` (see `.env.example`) |
+| `Got unexpected extra argument` / temperature error | wrong flags | use `-m` / `-t` / `-r` (NOT `-model` / `-temp` / `-ref`) |
+| `ERROR: You must specify at least one of --genes...` | no generation type given | add `--genes` and/or `--pathways` `--molecular` |
+| Runs but nothing happens / OpenAI auth error | default model is `gpt-4o-mini` | pass `-m gemini/gemini-2.5-flash` (keep the `gemini/` prefix) |
+| `404 ... model is no longer available` | `gemini-2.0-flash` was retired | use `gemini/gemini-2.5-flash`, `gemini/gemini-flash-latest`, or `gemini/gemini-2.5-pro` |
+
+> Tip: start with **one or two `-c` codes** — `--all` processes all ~891 codes (slow + API cost).
+
 ## Installation
 
 ### Create new virtual environment
