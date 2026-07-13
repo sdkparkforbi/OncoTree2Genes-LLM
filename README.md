@@ -1,6 +1,13 @@
 
 # GSoC 2025: Generate Gene and Pathway Lists for OncoTree Codes using LLM Prompting
 
+> ## 📖 그림책으로 쉽게 보기 (Picture-book explainer)
+> 이 프로젝트가 하는 일을 그림과 이야기로 쉽고 재미있게 정리했습니다.
+> - **온라인으로 보기:** https://sdkparkforbi.github.io/OncoTree2Genes-LLM/
+> - **파일로 보기:** [`docs/index.html`](docs/index.html)
+>
+> *"AI가 891개 암마다 핵심 유전자를 만들고 → 또 다른 AI가 PubMed 논문으로 채점한다"* — generate-then-verify 이야기.
+
 ## Table of Contents
 
 - [Description](#description)
@@ -130,7 +137,7 @@ This project, developed as part of Google Summer of Code 2025, aims to enhance t
 
 Output valid gene, pathway, and molecular subtype sets will be used by cBioPortal to improve visualzation of datasets on the web tool. For example, valid genes will be displayed before other mutated genes in patient and study summary view tabs as illustrated below:
 
-<img width="662" height="431" alt="Screenshot 2025-08-21 at 7 27 11 PM" src="https://github.com/user-attachments/assets/ea39cdee-1d60-4510-8e67-86093ed8bd35" />
+<img width="662" height="431" alt="Screenshot 2025-08-21 at 7 27 11 PM" src="assets/thumbnail.png" />
 
 This will aid in the identification of mutations relevant to the specific disease being studied.
 For more details, see the project description from the participating organization, cBioPortal for Cancer Genomics, here: https://github.com/cBioPortal/GSoC/issues/114. 
